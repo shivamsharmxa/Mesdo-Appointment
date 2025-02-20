@@ -5,14 +5,17 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // Ignores ESLint errors during builds
   },
+  sentry: {
+    hideSourceMaps: false, // Set to false if you want source maps for debugging
+  },
 };
 
 export default withSentryConfig(nextConfig, {
   org: "javascript-mastery",
   project: "care-pulse",
-  silent: !process.env.CI,
+  silent: false, // Set to false to enable logs for debugging
   widenClientFileUpload: true,
-  hideSourceMaps: true,
-  disableLogger: true,
+  hideSourceMaps: false, // Allow source maps for better debugging
+  disableLogger: false, // Enable logs
   automaticVercelMonitors: true,
 });
