@@ -6,22 +6,31 @@ import { DataTable } from "@/components/table/DataTable";
 import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 
 const AdminPage = async () => {
-  const appointments = await getRecentAppointmentList();
+  let appointments;
+  try {
+    appointments = await getRecentAppointmentList();
+  } catch (error) {
+    console.error("Failed to fetch appointments", error);
+    // Return a fallback UI or error message
+    return <div>Error loading appointments.</div>;
+  }
+
+  // Validate appointments data before using it
+  if (
+    !appointments ||
+    typeof appointments.scheduledCount === "undefined" ||
+    typeof appointments.pendingCount === "undefined" ||
+    typeof appointments.cancelledCount === "undefined"
+  ) {
+    return <div>Data is incomplete.</div>;
+  }
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
       <header className="admin-header">
         <Link href="/" className="cursor-pointer">
           <h1 className="text-3xl font-semibold">Mesdo</h1>
-          {/* <Image
-            src=""
-            height={32}
-            width={162}
-            alt="logo"
-            className="h-8 w-fit"
-          /> */}
         </Link>
-
         <p className="text-16-semibold">Admin Dashboard</p>
       </header>
 
